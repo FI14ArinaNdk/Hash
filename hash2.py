@@ -112,75 +112,75 @@ attack1_N()
 #           АТАКА 2 (краще не запускати)
 
 
-# def super_generate_tables(K, L, r=None):
-#     tables = []
-#     with ThreadPoolExecutor() as executor:
-#         futures = [executor.submit(generate_table, K, L, r) for _ in range(K)]  
-#         for future in futures:
-#             table, r_used = future.result()
-#             tables.append((table, r_used))
-#     return tables
+def super_generate_tables(K, L, r=None):
+    tables = []
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(generate_table, K, L, r) for _ in range(K)]  
+        for future in futures:
+            table, r_used = future.result()
+            tables.append((table, r_used))
+    return tables
 
-# def super_find_preimages(L, tables, hash_value):
-#     results = []
-#     with ThreadPoolExecutor() as executor:
-#         futures = [executor.submit(find_preimage, L, tables[i], hash_value) for i in range(len(tables))]
-#         for future in futures:
-#             results.append(future.result())
-#     return results
+def super_find_preimages(L, tables, hash_value):
+    results = []
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(find_preimage, L, tables[i], hash_value) for i in range(len(tables))]
+        for future in futures:
+            results.append(future.result())
+    return results
 
 
-# K_values = [2**5, 2**6, 2**7]
-# L_values = [2**4, 2**5, 2**6]
+K_values = [2**5, 2**6, 2**7]
+L_values = [2**4, 2**5, 2**6]
 
-# def attack_2_N():
-#     result = {
-#         'keys': [],
-#         'successes': [],
-#         'fails': [],
-#         'tables_generated': [],
-#         'redundancy_functions': [],
-#     }
+def attack_2_N():
+    result = {
+        'keys': [],
+        'successes': [],
+        'fails': [],
+        'tables_generated': [],
+        'redundancy_functions': [],
+    }
 
-#     for k in K_values:
-#         for l in L_values:
-#             tables = super_generate_tables(k, l)  
-#             # tables_generated = len(tables)  
-#             # result['tables_generated'].append(tables_generated)
-#             success = 0
-#             fail = 0
+    for k in K_values:
+        for l in L_values:
+            tables = super_generate_tables(k, l)  
+            # tables_generated = len(tables)  
+            # result['tables_generated'].append(tables_generated)
+            success = 0
+            fail = 0
 
-#             # redundancy_functions = [r for _, r in tables]
-#             # result['redundancy_functions'].append(redundancy_functions)
+            # redundancy_functions = [r for _, r in tables]
+            # result['redundancy_functions'].append(redundancy_functions)
 
-#             for _ in range(N):  
-#                 vector = generate_random(256)
-#                 hash_result = get_hash(vector)
-#                 preimages = super_find_preimages(l, tables, hash_result) 
+            for _ in range(N):  
+                vector = generate_random(256)
+                hash_result = get_hash(vector)
+                preimages = super_find_preimages(l, tables, hash_result) 
                 
-#                 if preimages:
-#                     found_valid_preimage = False
-#                     for preimage in preimages:
-#                         preimage_hash = get_hash(preimage)
-#                         if preimage_hash[-(n // 8):] == hash_result[-(n // 8):]:
-#                             success += 1
-#                             found_valid_preimage = True
-#                             break
-#                     if not found_valid_preimage:
-#                         fail += 1  
-#                 else:
-#                     fail += 1  
+                if preimages:
+                    found_valid_preimage = False
+                    for preimage in preimages:
+                        preimage_hash = get_hash(preimage)
+                        if preimage_hash[-(n // 8):] == hash_result[-(n // 8):]:
+                            success += 1
+                            found_valid_preimage = True
+                            break
+                    if not found_valid_preimage:
+                        fail += 1  
+                else:
+                    fail += 1  
 
-#             result['keys'].append((k, l))
-#             result['successes'].append(success)
-#             result['fails'].append(fail)
+            result['keys'].append((k, l))
+            result['successes'].append(success)
+            result['fails'].append(fail)
 
-#             print(f"K: {k}, L: {l}:") 
-#             print(f"Успіх: {success}, Невдача: {fail}")
-#             # print(f"Кількість згенерованих таблиць: {tables_generated}")
-#             # print(f"Функції надлишковості: {redundancy_functions}")  
-#             print(f"_______________________________________________________________________________________")
+            print(f"K: {k}, L: {l}:") 
+            print(f"Успіх: {success}, Невдача: {fail}")
+            # print(f"Кількість згенерованих таблиць: {tables_generated}")
+            # print(f"Функції надлишковості: {redundancy_functions}")  
+            print(f"_______________________________________________________________________________________")
 
-#     return result
+    return result
 
 # attack_2_N()
